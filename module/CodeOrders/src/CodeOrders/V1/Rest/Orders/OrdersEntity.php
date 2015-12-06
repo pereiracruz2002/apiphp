@@ -14,6 +14,7 @@ class OrdersEntity
 
     public function __construct()
     {
+
         $this->items = [];
     }
 

@@ -174,7 +174,7 @@ return array(
                 'entity_identifier_name' => 'id',
                 'route_name' => 'code-orders.rest.orders',
                 'route_identifier_name' => 'orders_id',
-                'hydrator' => 'Zend\\Stdlib\\Hydrator\\ArraySerializable',
+                'hydrator' => 'Zend\\Stdlib\\Hydrator\\ClassMethods',
             ),
             'CodeOrders\\V1\\Rest\\Orders\\OrdersCollection' => array(
                 'entity_identifier_name' => 'id',
@@ -231,10 +231,46 @@ return array(
             'CodeOrders\\V1\\Rest\\Users\\UsersRepository' => 'CodeOrders\\V1\\Rest\\Users\\UsersRepositoryFactory',
             'CodeOrders\\V1\\Rest\\Orders\\OrdersResource' => 'CodeOrders\\V1\\Rest\\Orders\\OrdersResourceFactory',
             'CodeOrders\\V1\\Rest\\Orders\\OrderItemTableGateway' => 'CodeOrders\\V1\\Rest\\Orders\\OrderItemTableGatewayFactory',
-            'CodeOrders\\V1\\Rest\\Orders\\OrderRepository' => 'CodeOrders\\V1\\Rest\\Orders\\Orders\\OrderRepositoryFactory',
+            'CodeOrders\\V1\\Rest\\Orders\\OrderRepository' => 'CodeOrders\\V1\\Rest\\Orders\\OrdersRepositoryFactory',
         ),
     ),
     'view_manager' => array(
         'display_exceptions' => true,
+    ),
+    'zf-mvc-auth' => array(
+        'authorization' => array(
+            'CodeOrders\\V1\\Rest\\Users\\Controller' => array(
+                'collection' => array(
+                    'GET' => false,
+                    'POST' => true,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ),
+                'entity' => array(
+                    'GET' => true,
+                    'POST' => false,
+                    'PUT' => true,
+                    'PATCH' => true,
+                    'DELETE' => true,
+                ),
+            ),
+            'CodeOrders\\V1\\Rest\\Ptypes\\Controller' => array(
+                'collection' => array(
+                    'GET' => true,
+                    'POST' => false,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ),
+                'entity' => array(
+                    'GET' => false,
+                    'POST' => false,
+                    'PUT' => false,
+                    'PATCH' => false,
+                    'DELETE' => false,
+                ),
+            ),
+        ),
     ),
 );

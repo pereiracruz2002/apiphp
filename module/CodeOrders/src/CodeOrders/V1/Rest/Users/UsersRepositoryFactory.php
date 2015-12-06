@@ -29,9 +29,9 @@ class UsersRepositoryFactory implements FactoryInterface
 
         $dbAdapter = $serviceLocator->get('dbAdapter');
 
-        $userMapper = new UsersMapper();
+        //$userMapper = new UsersMapper();
 
-        $hydrator = new HydratingResultSet($userMapper, new UsersEntity());
+        $hydrator = new HydratingResultSet(new ClassMethods(), new UsersEntity());
 
 
         $tableGateway = new TableGateway('oauth_users', $dbAdapter, null, $hydrator);
