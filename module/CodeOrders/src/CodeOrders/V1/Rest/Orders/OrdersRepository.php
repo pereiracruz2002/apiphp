@@ -10,7 +10,9 @@ namespace CodeOrders\V1\Rest\Orders;
 
 
 use Zend\Db\TableGateway\AbstractTableGateway;
+use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Stdlib\Hydrator\ObjectProperty;
 
 class OrdersRepository
 {
@@ -28,9 +30,13 @@ class OrdersRepository
 
     }
 
+    /**
+     * @return array
+     */
     public function findAll()
     {
         $hydrator = new ClassMethods();
+        $hydrator->addStrategy('items', new OrderItemHydratorStrategy(new ClassMethods()));
         $orders = $this->tableGateway->select();
         $res = [];
         foreach($orders as $order){
@@ -41,7 +47,35 @@ class OrdersRepository
            $data =$hydrator->extract($orders);
            $res[] = $data;
         }
+        $arratAdapter = new ArrayAdapter($res);
+        $ordersCollection = new OrdersCollection($arratAdapter);
         return $res;
+    }
+
+    /**
+     * @param $data
+     * @return int
+     */
+    public function insert(arrray $data)
+    {
+
+        $this->tableGateway->insert($data);
+        $id = $this->tableGateway->getLastInsertValue();
+        return id;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function insertItem(array $data)
+    {
+        $this->orderItemTableGateway->insert($data);
+        return $this->orderItemTableGateway->getLastInsertValue();
+    }
+
+    public function getTableGateway()
+    {
+        return $this->tableGateway;
     }
 
 

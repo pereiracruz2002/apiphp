@@ -7,10 +7,19 @@ use ZF\Rest\AbstractResourceListener;
 class OrdersResource extends AbstractResourceListener
 {
     private $repository;
+    /**
+     * @var OrdersService
+     */
+    private $service;
 
-    public function __construct(OrdersRepository $repository)
+    /**
+     * @param OrdersRepository $repository
+     * @param OrdersService $service
+     */
+    public function __construct(OrdersRepository $repository, OrdersService $service)
     {
         $this->repository = $repository;
+        $this->service = $service;
     }
 
     /**
@@ -21,7 +30,12 @@ class OrdersResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        return new ApiProblem(405, 'The POST method has not been defined');
+        $result = $this->service->insert($data);
+        if($result == "error"){
+            return new ApiProblem(405, 'Error processing order');
+        }
+        return $result;
+        //return new ApiProblem(405, 'The POST method has not been defined');
     }
 
     /**
